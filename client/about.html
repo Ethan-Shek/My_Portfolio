@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Me</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+    rel="stylesheet">
+  <style>
+    /* Page-specific content styling layered on top of pond */
+    .project-content {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.1);
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      border-radius: 25px;
+      padding: 40px;
+      width: 80%;
+      max-width: 950px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(6px);
+      z-index: 5;
+      /* Above lily pads */
+      color: #fff;
+      text-align: center;
+    }
+
+    .p1 {
+      text-align: left;
+      max-width: 520px;
+
+    }
+
+    .h1-base {
+      position: relative;
+      z-index: 1;
+      font-family: 'Modak', cursive;
+      font-size: 5rem;
+      color: #D1232A;
+      left: 2rem;
+      top: -1.4rem;
+      margin-bottom: 1rem;
+      letter-spacing: 0;
+      font-weight: 400;
+      text-shadow: none;
+    }
+
+    .h1-top {
+      position: absolute;
+      /* Layer on top of h1 */
+      top: 1rem;
+      left: 23.2rem;
+      z-index: 2;
+      font-family: 'Modak', cursive;
+      font-size: 5rem;
+      letter-spacing: 0;
+      font-weight: 400;
+      color: #fff;
+      pointer-events: none;
+    }
+
+    p {
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 1.3rem;
+      line-height: 2rem;
+      margin-top: 0rem;
+      margin-bottom: 2rem;
+      z-index: 1;
+    }
+
+    .h2-top {
+      z-index: 1;
+      position: relative;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .h2-base {
+      position: absolute;
+      left: 15.5rem;
+      transform: translateY(-2rem);
+      z-index: 0;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #D1232A;
+    }
+
+    .h3-top {
+      z-index: 1;
+      position: relative;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .h3-base {
+      position: absolute;
+      left: 23.9rem;
+      transform: translateY(-2rem);
+      z-index: 0;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #D1232A;
+    }
+
+    .h4-top {
+      z-index: 1;
+      position: relative;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .h4-base {
+      position: absolute;
+      left: 27rem;
+      transform: translateY(-2rem);
+      z-index: 0;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #D1232A;
+    }
+
+    .log-image {
+      position: absolute;
+      top: 8%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.05, 0.5);
+      z-index: 0;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .EVS-image {
+      position: absolute;
+      width: 200px;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      top: 28%;
+      left: 75%;
+      transform: translate(-50%, -50%) scale(1.5, 1.5);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .food-image {
+      position: absolute;
+      top: 58%;
+      left: 20%;
+      transform: translate(-50%, -50%) scale(0.75, 0.75);
+      z-index: 0;
+      opacity: 0.15;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .cut-image {
+      position: absolute;
+      top: 70%;
+      left: 80%;
+      transform: translate(-50%, -50%) scale(0.75, 0.75);
+      z-index: 0;
+      opacity: 0.15;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+
+    .back-button {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 15px 40px;
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.3);
+      border: 2px solid #fff;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+    }
+
+    .koi-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      display: block;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="pond-container">
+    <canvas id="koiCanvas" class="koi-canvas"></canvas>
+    <div class="blue-tint"></div>
+
+    <!-- Floating project content -->
+    <div class="project-content">
+      <img src="../images/log_adobestock.png" alt="Log png" class="log-image" />
+      <h1 class="h1-base">About Me</h1>
+      <h1 class="h1-top">About Me</h1>
+      <p class="p1">
+        <br>Hi, I’m Ethan Shek, a third-year New Media Interactive Development student at RIT who is passionate about
+        combining creativity, technology, and storytelling to build interactive experiences that are both fun and
+        meaningful.
+      <img src="../images/EVS.png" alt="EVS png" class="EVS-image" />
+        <br>
+        <br>When I am not designing or coding, you can find me at the gym 💪🏻, spending time with friends 🤪, or competing on the
+        🐯 RIT D1 League of Legends team. I enjoy challenging myself in everything I do because growth comes from exploring
+        new experiences and learning from them.
+
+      </p class="p1">
+      <h2 class="h2-base">The Flavor Behind My Creativity</h2>
+      <h2 class="h2-top">The Flavor Behind My Creativity</h2>
+      <img src="../images/Cooking ChatGPT.png" alt="food png" class="food-image" />
+      <img src="../images/Knife ChatGPT.png" alt="cut png" class="cut-image" />
+
+      <p>
+        My passion for creativity began in the kitchen. Food has always been a way for me to express myself through
+        endless combinations of flavors. Cooking taught me that creativity is not about following a recipe but about
+        experimenting, adapting, and finding new ways to make something your own.
+        <br>
+        <br>Food helped shape the person I am today. It gave me confidence, strengthened my ability to communicate, and
+        taught me how to take feedback and turn it into growth. Just like in design, every recipe is a work in progress.
+        Each iteration adds a new flavor, a new insight, and a new way to connect with others.
+        <br>
+        <br>I carry that same mindset into my UX/UI and front-end work. I do not just follow the recipe, I create my
+        own. I
+        am always exploring new ways to bring creativity into the world of design while blending technical skill with
+        artistic experimentation. Whether I am developing a digital interface or creating a physical prototype, my goal
+        is to design experiences that bring people together in the same way food does.
+      </p>
+      <h3 class="h3-base">My Design Taste</h3>
+      <h3 class="h3-top">My Design Taste</h3>
+      <p>
+        I believe that good design, like good food, is about balance, emotion, and experience. It should look great,
+        feel intuitive, and leave people with something memorable. I aim to design interfaces and visuals that don’t
+        just function, they connect.
+      </p>
+      <a href="../index.html" class="back-button">⬅️ Back to Pond</a>
+    </div>
+  </div>
+
+  <!-- Optional: load koi motion if you want the same animation backdrop -->
+  <script type="module" src="../scripts/pondBackground.js"></script>
+</body>
+
+</html>

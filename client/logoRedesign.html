@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pudgie's Redesign</title>
+  <link rel="stylesheet" href="../style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+    rel="stylesheet">
+  <style>
+    /* Page-specific content styling layered on top of pond */
+    .project-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.1);
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      border-radius: 25px;
+      padding: 40px;
+      width: 80%;
+      max-width: 950px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(6px);
+      z-index: 5;
+      /* Above lily pads */
+      color: #fff;
+      text-align: center;
+    }
+
+    .h1-base {
+      position: relative;
+      z-index: 1;
+      font-family: 'Modak', cursive;
+      font-size: 5rem;
+      color: #D1232A;
+      left: 3rem;
+      top: 1.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: 0;
+      font-weight: 400;
+      text-shadow: none;
+    }
+
+    .h1-top {
+      position: absolute;
+      /* Layer on top of h1 */
+      top: 3.9rem;
+      left: 14rem;
+      z-index: 2;
+      font-family: 'Modak', cursive;
+      font-size: 5rem;
+      letter-spacing: 0;
+      font-weight: 400;
+      color: #fff;
+      pointer-events: none;
+    }
+
+    p {
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 1.3rem;
+      line-height: 2rem;
+      margin-top: 0rem;
+      margin-bottom: 2rem;
+    }
+
+    .h2-top {
+      z-index: 1;
+      position: relative;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .h2-base {
+      position: absolute;
+      left: 23.1rem;
+      transform: translateY(-2rem);
+      z-index: 0;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #D1232A;
+    }
+
+    .h3-top {
+      z-index: 1;
+      position: relative;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .h3-base {
+      position: absolute;
+      left: 23.5rem;
+      transform: translateY(-2rem);
+      z-index: 0;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #D1232A;
+    }
+
+    .h4-top {
+      z-index: 1;
+      position: relative;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .h4-base {
+      position: absolute;
+      left: 25.8rem;
+      transform: translateY(-2rem);
+      z-index: 0;
+      font-family: 'Modak', cursive;
+      font-size: 2.3rem;
+      line-height: 1.2rem;
+      margin-bottom: 1.2rem;
+      font-weight: 400;
+      text-decoration: underline;
+      color: #D1232A;
+    }
+
+    .log-image {
+      position: absolute;
+      top: 8%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.05, 0.5);
+      z-index: 0;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 15px 40px;
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.3);
+      border: 2px solid #fff;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+    }
+
+    .koi-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      display: block;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="pond-container">
+    <canvas id="koiCanvas" class="koi-canvas"></canvas>
+    <div class="blue-tint"></div>
+
+    <!-- Floating project content -->
+    <div class="project-content">
+      <img src="../images/log_adobestock.png" alt="Log png" class="log-image" />
+      <h1 class="h1-base">Pudgie's Redesign</h1>
+      <h1 class="h1-top">Pudgie's Redesign</h1>
+      <p>
+        <br><strong>Role:</strong> Designer & Brand Developer (Independent Project)
+        <br><strong>Tools:</strong> Adobe Illustrator, Photoshop, InDesign
+        <br><strong>Focus:</strong> Visual Identity · Typography · Physical Prototyping
+      <h2 class="h2-base">Project Overview</h2>
+      <h2 class="h2-top">Project Overview</h2>
+      <p>
+        This project was a complete logo and brand identity redesign for Pudgie’s Pizzeria, a local restaurant known for
+        its welcoming, homestyle atmosphere. My goal was to modernize the logo while keeping its approachable and
+        family-oriented character.
+      </p>
+      <h3 class="h3-base">Design Approach</h3>
+      <h3 class="h3-top">Design Approach</h3>
+      <p>
+        I approached this project as both a branding and UX challenge. Creating a cohesive identity that worked
+        digitally, in print, and in physical space.
+
+        <br>✦ Research & Concepting: Started with competitor analysis and mood mapping to capture key brand traits:
+        warm, bold, approachable, and local.
+
+        <br>✦ Sketching & Iteration: Explored over 20 logo sketches, experimenting with text-image integration and
+        typographic form to find a simple, memorable identity.
+
+        <br>✦ Typography & Color: Selected a rounded, bold typeface to reflect friendliness and trust. Used a warm
+        red-gold palette reminiscent of classic pizza shop interiors.
+
+        <br>✦ Brand Application: Designed supporting materials: a menu layout, business card, and letterhead. Ensuring
+        consistent hierarchy and visual balance across touchpoints.
+
+        <br>✦ Physical Prototype: Constructed a framed, physical version of the menu to simulate an in-store display. This
+        step helped evaluate real-world readability, color contrast, and user interaction from a customer’s perspective.
+      </p>
+      <h4 class="h4-base">Deliverables</h4>
+      <h4 class="h4-top">Deliverables</h4>
+      <p>
+        ✦ Redesigned logo system (color and monochrome versions).
+
+        <br>✦ Menu and brand collateral redesign with print-ready layouts.
+
+        <br>✦ Physical prototype frame showcasing the new menu in real-world context.
+      </p>
+
+      <div class="pdf-viewer">
+        <iframe src="../images/LogoRedesign.pdf" width="100%" height="700px"
+          style="border:none; border-radius:15px; box-shadow:0 0 20px rgba(0,0,0,0.4);">
+        </iframe>
+      </div>
+
+      <a href="../index.html" class="back-button">⬅️ Back to Pond</a>
+    </div>
+  </div>
+
+  <!-- Optional: load koi motion if you want the same animation backdrop -->
+  <script type="module" src="../scripts/pondBackground.js"></script>
+</body>
+
+</html>

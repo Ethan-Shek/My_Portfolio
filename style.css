@@ -1,0 +1,396 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  overflow: auto;
+}
+
+/* Pond container */
+.pond-container {
+  position: relative;
+  width: 100%;
+  height: 2000px;
+  background: linear-gradient(to bottom, #7ec8e3, #4fa3d1);
+  overflow: hidden;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .pond-container {
+    height: 2000px;
+    /* taller on mobile since content stacks vertically */
+  }
+}
+
+/* Blue tint overlay above fish but below lily pads */
+.blue-tint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 255, 0.2);
+  pointer-events: none;
+  z-index: 2.5;
+  animation-name: tintPulse;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* Water overlay / shimmer effect */
+.pond-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('images/pond2 ChatGPT.png') repeat;
+  background-size: 200% 200%;
+  opacity: 0.5;
+  pointer-events: none;
+  animation: shimmer 40s infinite linear;
+  mix-blend-mode: overlay;
+  z-index: 1;
+  /* behind fish and tint */
+}
+
+/* Koi fish canvas layer */
+.koi-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  /* fish under blue tint and lily pads */
+  touch-action: none; /* enable custom touch handling */
+}
+
+/* Lily pads layer */
+.lilypads {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  /* topmost layer above fish and tint */
+}
+
+/* Rocks on top of everything */
+.rocks {
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.rocks.left {
+  left: -60px;
+}
+
+.rocks.right {
+  right: -60px;
+}
+
+.rocks.left .rock,
+.rocks.right .rock {
+  display: block;
+  height: auto;
+  margin: 0;
+}
+
+/* General canvas settings */
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: default;
+}
+
+/* Log text styling */
+.log-text {
+  position: absolute;
+  font-family: 'Modak', sans-serif;
+  font-size: 36px;
+  font-weight: normal;
+  color: #fff;
+  text-align: center;
+  line-height: 1.2;
+  z-index: 5;
+  /* Ensure text is above logs */
+}
+
+/* Koi fish styling */
+.koi {
+  transition: transform 0.1s linear;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 100% 100%;
+  }
+}
+
+/* Blue tint pulsing animation */
+@keyframes tintPulse {
+  0% {
+    background-color: rgba(0, 0, 255, 0.1);
+  }
+
+  50% {
+    background-color: rgba(0, 0, 255, 0.3);
+  }
+
+  100% {
+    background-color: rgba(0, 0, 255, 0.1);
+  }
+}
+
+/* Footer overlay styling*/
+.footer-overlay {
+  position: absolute;
+  bottom: 1.7rem;
+  left: 0;
+  width: 100%;
+  font-family: "Modak", cursive;
+  font-size: 1.6rem;
+  color: #f0f0f0;
+  font-weight: 400;
+  -webkit-text-stroke: 1px rgba(92, 64, 51);
+  text-shadow: 2px 2px 6px #F1E9D6;
+  padding-bottom: 30px;
+  /* space from the bottom edge */
+  z-index: 10;
+  /* ensures it appears on top of the bridge canvas */
+  pointer-events: auto;
+}
+
+.footer-overlay p {
+  display: flex;
+  justify-content: space-between;
+  /* left, center, right */
+  align-items: center;
+  /* vertically center items */
+  width: 90%;
+  /* optional: reduce width for spacing */
+  margin: 0 auto;
+  /* center the flex container horizontally */
+}
+
+@media (max-width: 768px) {
+  .footer-overlay {
+    font-size: 1rem;
+    padding-bottom: 20px;
+    bottom: 1rem;
+  }
+
+  .footer-overlay p {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-overlay {
+    font-size: 0.8rem;
+    bottom: 0.5rem;
+  }
+
+  .footer-overlay p {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+}
+
+.center-text {
+  text-align: center;
+  flex-grow: 1;
+  /* makes it stay centered */
+}
+
+.right-text {
+  text-align: right;
+}
+
+.linkedin-link {
+  color: #90D5FF;
+  text-decoration: none;
+}
+
+.linkedin-link:hover {
+  color: #57B9FF;
+  /* darker blue on hover */
+}
+
+span.spacer {
+  color: #f0f0f0;
+  margin: 0 2.5rem;
+}
+
+.dragon-header {
+  position: absolute;
+  top: -8rem;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.dragon-overlay {
+  width: 520px;
+  height: auto;
+  display: block;
+  animation: floatDragon 5s ease-in-out infinite alternate;
+  pointer-events: auto;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .dragon-overlay {
+    width: 280px;
+    /* smaller on tablet */
+  }
+}
+
+@media (max-width: 480px) {
+  .dragon-overlay {
+    width: 180px;
+    /* very small on phone */
+  }
+}
+
+/* Gentle floating motion */
+@keyframes floatDragon {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* Curved "Projects" text */
+.curved-projects {
+  position: absolute;
+  bottom: 13.1rem;
+  left: -6.5rem;
+  width: 500px;
+  height: 150px;
+  z-index: 21;
+  animation: floatText 5s ease-in-out infinite alternate;
+  pointer-events: none; /* only text clickable */
+}
+
+/* Curved "About Me" text */
+.curved-about {
+  position: absolute;
+  bottom: 13.8rem;
+  left: 3.3rem;
+  width: 500px;
+  height: 150px;
+  z-index: 21;
+  animation: floatText 5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .curved-projects {
+    bottom: 10rem;
+    left: -3rem;
+    width: 300px;
+    height: 100px;
+  }
+
+  .curved-about {
+    bottom: 10.5rem;
+    left: 1rem;
+    width: 300px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .curved-projects {
+    bottom: 8rem;
+    left: -2rem;
+    width: 220px;
+    height: 80px;
+  }
+
+  .curved-about {
+    bottom: 8.5rem;
+    left: 0;
+    width: 220px;
+    height: 80px;
+  }
+}
+
+/* Shared text styles */
+.curved-projects text,
+.curved-about text {
+  fill: rgb(255, 175, 27);
+  font-family: 'Modak', cursive;
+  font-size: 2rem;
+  stroke: rgb(171, 104, 46); 
+  stroke-width: 3px; 
+  paint-order: stroke fill; /* draws the stroke under the fill */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: fill 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .curved-projects text,
+  .curved-about text {
+    font-size: 1.3rem;
+    stroke-width: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .curved-projects text,
+  .curved-about text {
+    font-size: 1rem;
+    stroke-width: 1.5px;
+  }
+}
+
+.curved-projects text:hover,
+.curved-about text:hover {
+  fill: #FFD700; 
+}
+
+@keyframes floatText {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); } 
+  100% { transform: translateY(0); }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  /* Increase touch target sizes */
+  .curved-projects svg,
+  .curved-about svg {
+    min-height: 80px;
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Improve readability on small screens */
+  canvas {
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+  }
+}

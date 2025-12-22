@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Koi Pond</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Modak&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="pond-container">
+
+    <!-- DRAGON HEADER + CURVED TEXT -->
+    <div class="dragon-header">
+      <img src="images/dragon2.png" alt="Dragon" class="dragon-overlay" />
+
+      <!-- Curved PROJECTS text -->
+      <div class="curved-projects">
+        <svg viewBox="0 0 500 150">
+          <path id="projects-path" d="M 60 140 Q 450 160 250 -15" fill="transparent" />
+          <a href="./client/project.html">
+            <text width="500">
+              <textPath href="#projects-path" startOffset="50%" text-anchor="middle">
+                Projects
+              </textPath>
+            </text>
+          </a>
+        </svg>
+      </div>
+
+      <!-- Curved ABOUT ME text -->
+      <div class="curved-about">
+        <svg viewBox="0 0 500 150">
+          <path id="about-path" d="M 60 100 Q 450 180 250 0" fill="transparent" />
+          <a href="./client/about.html">
+            <text width="500">
+              <textPath href="#about-path" startOffset="50%" text-anchor="middle">
+                About Me
+              </textPath>
+            </text>
+          </a>
+        </svg>
+      </div>
+    </div>
+
+    <!-- CANVAS LAYERS -->
+    <canvas id="koiCanvas" class="koi-canvas"></canvas>
+
+    <div class="blue-tint"></div>
+
+    <canvas id="lilyCanvas" class="lilypads"></canvas>
+
+    <!-- ROCKS -->
+    <div class="rocks left"></div>
+    <div class="rocks right"></div>
+
+    <!-- BRIDGE (only one ID allowed) -->
+    <canvas class="bridge" id="bridgeCanvas"></canvas>
+
+    <!-- FOOTER -->
+    <footer class="footer-overlay">
+      <p>
+        <a href="https://www.linkedin.com/in/ethanshek" target="_blank" class="linkedin-link">LinkedIn</a>
+        <span class="center-text">© 2025 Ethan — Crafted with flavor 😋, focus 🎯, and creativity ✨</span>
+        <span class="right-text">dinoeshek@gmail.com</span>
+      </p>
+    </footer>
+
+  </div> <!-- END pond-container -->
+
+  <!-- SCRIPTS -->
+  <script type="module" src="./scripts/koi.js"></script>
+  <script type="module" src="./scripts/lilypads.js"></script>
+
+  <script type="module">
+    import { createRockBorders } from './scripts/rock.js';
+
+    document.addEventListener('DOMContentLoaded', createRockBorders);
+    window.addEventListener('resize', createRockBorders);
+  </script>
+
+</body>
+</html>

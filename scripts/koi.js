@@ -1,0 +1,371 @@
+import { drawLilyPad } from './lilypad.js';
+import { drawLog } from './log.js';
+import { drawBridge } from './bridge.js';
+
+const canvas = document.getElementById("koiCanvas");
+const ctx = canvas.getContext("2d");
+
+const koiImages = ["images/koi1.png", "images/koi2.png"];
+const koiArray = [];
+const logImages = ["images/log_adobestock.png"];
+let loadedLogImages = [];
+let loadedImages = [];
+const ripples = [];
+let mouse = { x: 0, y: 0 };
+let isMouseDown = false;
+
+// Initialize log and lily pad arrays
+let logs = [];
+let lilyPads = [];
+
+// Logs - responsive sizing based on viewport
+function getResponsiveLogSize(baseSize) {
+  if (canvas.width < 480) return baseSize * 0.4;
+  if (canvas.width < 768) return baseSize * 0.55;
+  return baseSize;
+}
+
+// Get responsive log dimensions based on screen size
+function getResponsiveLogDimensions() {
+  if (canvas.width < 480) return { widthScale: 0.5, heightScale: 0.5 };
+  if (canvas.width < 768) return { widthScale: 0.5, heightScale: 0.5 };
+  return { widthScale: 1, heightScale: 1 };
+
+}
+
+// Get responsive lily pad radius
+function getResponsiveLilyPadRadius(baseRadius) {
+  if (canvas.width < 480) return baseRadius * 0.5;
+  if (canvas.width < 768) return baseRadius * 0.5;
+  return baseRadius;
+}
+
+function updateLogsAndLilyPads() {
+  const logDims = getResponsiveLogDimensions();
+
+  // Logs - recreated on resize with responsive sizing
+  logs = [
+    { x: canvas.width / 4, y: 300, width: 550 * logDims.widthScale, height: 220 * logDims.heightScale, image: null, rotation: 0, text: "Hello,\nI'm", txtsize: getResponsiveLogSize(105) },
+    { x: canvas.width / 3, y: 525, width: 700 * logDims.widthScale, height: 220 * logDims.heightScale, image: null, rotation: 0, text: " Ethan \n       Shek", txtsize: getResponsiveLogSize(105) },
+    { x: canvas.width / 2, y: 750, width: 615 * logDims.widthScale, height: 170 * logDims.heightScale, image: null, rotation: 0, text: "Highlights", txtsize: getResponsiveLogSize(110) },
+    { x: canvas.width / 1.28, y: 60, width: 550 * logDims.widthScale, height: 70 * logDims.heightScale, image: null, rotation: 0, text: "Click on the water and lillypads!", txtsize: getResponsiveLogSize(30) },
+  ];
+
+  // Lily pads - responsive layout based on viewport
+  const isMobile = canvas.width < 768;
+  const isPhone = canvas.width < 480;
+  const baseXOffset = isMobile ? canvas.width / 2 : canvas.width / 3;
+  const rightXOffset = isMobile ? canvas.width / 2 : canvas.width / 3 + 500;
+
+  // Responsive lily pad sizing
+  const mainPadRadius = getResponsiveLilyPadRadius(175);
+  const mainPadBackRadius = getResponsiveLilyPadRadius(185);
+  const aboutPadRadius = getResponsiveLilyPadRadius(270);
+  const aboutPadBackRadius = getResponsiveLilyPadRadius(280);
+  const decorPadRadius = getResponsiveLilyPadRadius(60);
+  const lilyPadTextSize = canvas.width < 480 ? 25 : (canvas.width < 768 ? 35 : 50);
+
+  lilyPads = [
+    { x: baseXOffset, y: 1100, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: baseXOffset, y: 1100, radius: mainPadRadius, image: 'images/pokeball2 ChatGPT.png', crop: { sx: 0, sy: 0, sw: 1024, sh: 1024 }, text: "Pokemon \n API Finder", txtsize: lilyPadTextSize, link: "client/pokemonAPI.html" },
+
+    { x: baseXOffset, y: 1550, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: baseXOffset, y: 1550, radius: mainPadRadius, image: 'images/Fruit Ninja2 ChatGPT.png', text: "Fruit Ninja", txtsize: lilyPadTextSize, link: "client/fruitNinja.html" },
+
+    { x: rightXOffset, y: 1100, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: rightXOffset, y: 1100, radius: mainPadRadius, image: 'images/anime-collage wallpapercom.jpg', crop: { sx: 0, sy: 0, sw: 400, sh: 490 }, text: "Crunchtime \n Magazine", txtsize: lilyPadTextSize, link: "client/crunchtime.html" },
+
+    { x: rightXOffset, y: 1550, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: rightXOffset, y: 1550, radius: mainPadRadius, image: 'images/pudgie_logo.png', text: "Logo Redesign", txtsize: lilyPadTextSize, link: "client/logoRedesign.html" },
+
+    { x: canvas.width / 2 + (isMobile ? 0 : 350), y: 350, radius: aboutPadBackRadius, color: '#4CAF50' },
+    { x: canvas.width / 2 + (isMobile ? 0 : 350), y: 350, radius: aboutPadRadius, image: 'images/EVS.png', crop: { sx: 900, sy: 1000, sw: 1500, sh: 1500 }, link: "client/about.html" },
+
+    // Additional decore lily pads - responsive positioning and sizing
+    { x: isMobile ? canvas.width * 0.1 : 135, y: 860, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' }, //left top
+    { x: isMobile ? canvas.width * 0.15 : 200, y: 1300, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //left middle
+    { x: isMobile ? canvas.width * 0.12 : 180, y: 1700, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' }, //left bottom
+
+    { x: isMobile ? canvas.width * 0.9 : canvas.width - 135, y: 900, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //right top
+    { x: isMobile ? canvas.width * 0.85 : canvas.width - 200, y: 1320, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' }, //right middle
+    { x: isMobile ? canvas.width * 0.88 : canvas.width - 180, y: 1700, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //right bottom
+  ];
+}
+
+function resizeCanvas() {
+  const container = canvas.parentElement;
+  canvas.width = container.clientWidth;
+  canvas.height = container.clientHeight;  // full container height
+
+  // Recalculate logs and lily pads positions when canvas resizes
+  updateLogsAndLilyPads();
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+canvas.addEventListener("mousemove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+});
+
+canvas.addEventListener("mousedown", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  ripples.push({
+    x,
+    y,
+    radius: 0,
+    opacity: 0.6,
+    growth: 1 + Math.random() * 2
+  });
+});
+
+canvas.addEventListener("mouseup", () => {
+  isMouseDown = false;
+});
+
+// Touch event support for mobile devices
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault(); // prevent scrolling
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches[0];
+  mouse.x = touch.clientX - rect.left;
+  mouse.y = touch.clientY - rect.top;
+}, false);
+
+canvas.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.touches[0];
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+
+  ripples.push({
+    x,
+    y,
+    radius: 0,
+    opacity: 0.6,
+    growth: 1 + Math.random() * 2
+  });
+}, false);
+
+canvas.addEventListener("touchend", (e) => {
+  e.preventDefault();
+}, false);
+
+const bridge = {
+  image: 'images/bridge ChatGPT.png',
+  y: 1930,  // adjust based on your pond height
+  scale: 0.6,
+};
+
+
+function loadImages(callback) {
+  let count = 0;
+  koiImages.forEach((src, index) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      loadedImages[index] = img;
+      count++;
+      if (count === koiImages.length) callback();
+    };
+    img.onerror = () => console.error(`Failed to load ${src}`);
+  });
+}
+
+function loadLogImages(callback) {
+  let count = 0;
+  logImages.forEach((src, index) => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      loadedLogImages[index] = img;
+      count++;
+      if (count === logImages.length) callback();
+    };
+    img.onerror = () => console.error(`Failed to load ${src}`);
+  });
+}
+
+// Assign log images to log objects
+function assignLogImages() {
+  logs.forEach((log, i) => {
+    log.image = loadedLogImages[i % loadedLogImages.length];
+  });
+}
+
+class Koi {
+  constructor(img) {
+    this.img = img;
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    
+    // Scale fish size based on screen size - half size on mobile/tablet
+    let sizeScale = 1;
+    if (canvas.width < 768) {
+      sizeScale = 0.5;
+    }
+    
+    this.size = (70 + Math.random() * 50) * sizeScale;
+    this.baseSpeed = 0.2 + Math.random() * 0.3;
+    this.speedVariation = 0.05 + Math.random() * 0.1;
+    this.speedPhase = Math.random() * Math.PI * 2;
+    this.angle = Math.random() * Math.PI * 2;
+    this.turnSpeed = 0.01 + Math.random() * 0.015;
+    this.targetTurn = 0;
+  }
+
+  update() {
+    this.speedPhase += 0.02;
+    const currentSpeed = this.baseSpeed + Math.sin(this.speedPhase) * this.speedVariation;
+    if (Math.random() < 0.02) this.targetTurn = (Math.random() - 0.5) * 0.3;
+    this.angle += (this.targetTurn - this.angle * 0.0001) * this.turnSpeed;
+    this.x += Math.cos(this.angle) * currentSpeed * 1.5;
+    this.y += Math.sin(this.angle) * currentSpeed * 1.5;
+
+    const margin = this.size / 2;
+    if (this.x < margin) { this.x = margin; this.angle = Math.PI - this.angle + (Math.random() - 0.5) * 0.2; }
+    if (this.x > canvas.width - margin) { this.x = canvas.width - margin; this.angle = Math.PI - this.angle + (Math.random() - 0.5) * 0.2; }
+    if (this.y < margin) { this.y = margin; this.angle = -this.angle + (Math.random() - 0.5) * 0.2; }
+    if (this.y > canvas.height - margin) { this.y = canvas.height - margin; this.angle = -this.angle + (Math.random() - 0.5) * 0.2; }
+    this.angle = (this.angle + Math.PI * 2) % (Math.PI * 2);
+  }
+
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    const tilt = Math.sin(this.targetTurn * 1.25) * 0.3;
+    const rotationOffset = -3 * Math.PI / 4;
+    ctx.rotate(this.angle + rotationOffset + tilt);
+    ctx.globalAlpha = 0.9;
+    ctx.drawImage(this.img, -this.size / 2, -this.size / 2, this.size, this.size);
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+}
+
+// Load all images and start animation
+loadImages(() => {
+  for (let i = 0; i < 50; i++) {
+    koiArray.push(new Koi(loadedImages[i % loadedImages.length]));
+  }
+
+  loadLogImages(() => {
+    assignLogImages();
+    animate();
+  });
+});
+
+function animate(time) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw fading ripples
+  for (let i = ripples.length - 1; i >= 0; i--) {
+    const ripple = ripples[i];
+    ripple.radius += 2;          // expand size
+    ripple.opacity -= 0.01;      // fade out
+
+    if (ripple.opacity <= 0) {
+      ripples.splice(i, 1);      // remove finished ripples
+      continue;
+    }
+
+    ctx.beginPath();
+    ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(100, 200, 255, ${ripple.opacity})`;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "rgba(100, 200, 255, 0.4)";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  // Water background
+  ctx.fillStyle = "rgba(173, 216, 230, 0.07)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Draw koi fish
+  koiArray.forEach(koi => {
+    koi.update();
+    koi.draw();
+  });
+
+  // Draw logs
+  logs.forEach(log => {
+    drawLog(ctx, log, time);
+  });
+
+  // Draw lily pads on top
+  lilyPads.forEach(pad => {
+    drawLilyPad(ctx, pad, time, mouse);
+  });
+
+  // Draw bridge near bottom
+  drawBridge(ctx, canvas, bridge);
+  requestAnimationFrame(animate);
+}
+
+// Page click handling - supports both mouse and touch
+function handleCanvasClick(mouseX, mouseY) {
+  lilyPads.forEach(pad => {
+    const dx = mouseX - pad.x;
+    const dy = mouseY - pad.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < pad.radius) {
+      // Create ripple at click point
+      ripples.push({ x: mouseX, y: mouseY, radius: 0, opacity: 1 });
+
+      // Delay page transition slightly for effect
+      setTimeout(() => {
+        if (pad.link) window.location.href = pad.link;
+      }, 500); // 0.5s delay so ripple is visible
+    }
+  });
+}
+
+canvas.addEventListener("click", (event) => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = event.clientX - rect.left;
+  const mouseY = event.clientY - rect.top;
+  handleCanvasClick(mouseX, mouseY);
+});
+
+// Touch click handler
+canvas.addEventListener("touchend", (event) => {
+  if (event.changedTouches.length > 0) {
+    const rect = canvas.getBoundingClientRect();
+    const touch = event.changedTouches[0];
+    const mouseX = touch.clientX - rect.left;
+    const mouseY = touch.clientY - rect.top;
+    handleCanvasClick(mouseX, mouseY);
+  }
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+
+  // Check if hovering over a clickable lily pad
+  let hoveringClickable = false;
+  for (const pad of lilyPads) {
+    if (!pad.link) continue; // skip non-clickable pads
+
+    const dx = mouse.x - pad.x;
+    const dy = mouse.y - pad.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance < pad.radius) {
+      hoveringClickable = true;
+      break;
+    }
+  }
+
+  // Change cursor based on hover state
+  canvas.style.cursor = hoveringClickable ? "pointer" : "default";
+});
+
