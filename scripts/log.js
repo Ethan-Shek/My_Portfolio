@@ -17,9 +17,9 @@ export function drawLog(ctx, log, time) {
 
   // Draw multi-line text
   if (text) {
-    const paddingX = 80;  // horizontal padding from log edge
-    const paddingY = 15;  // vertical padding from top of log
-    const lineHeight = 110; // space between lines
+    const paddingX = log.textOffsetX !== undefined ? log.textOffsetX : 80;
+    const paddingY = log.textOffsetY !== undefined ? log.textOffsetY : 15;
+    const lineHeight = log.textLineHeight !== undefined ? log.textLineHeight : 110;
 
     
     ctx.font = `${txtsize}px 'Modak', sans-serif`;

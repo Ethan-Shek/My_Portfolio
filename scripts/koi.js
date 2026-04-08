@@ -20,15 +20,15 @@ let lilyPads = [];
 
 // Logs - responsive sizing based on viewport
 function getResponsiveLogSize(baseSize) {
-  if (canvas.width < 480) return baseSize * 0.4;
-  if (canvas.width < 768) return baseSize * 0.55;
+  if (canvas.width < 480) return baseSize * 0.28;
+  if (canvas.width < 768) return baseSize * 0.38;
   return baseSize;
 }
 
 // Get responsive log dimensions based on screen size
 function getResponsiveLogDimensions() {
-  if (canvas.width < 480) return { widthScale: 0.5, heightScale: 0.5 };
-  if (canvas.width < 768) return { widthScale: 0.5, heightScale: 0.5 };
+  if (canvas.width < 480) return { widthScale: 0.32, heightScale: 0.32 };
+  if (canvas.width < 768) return { widthScale: 0.42, heightScale: 0.42 };
   return { widthScale: 1, heightScale: 1 };
 
 }
@@ -42,20 +42,56 @@ function getResponsiveLilyPadRadius(baseRadius) {
 
 function updateLogsAndLilyPads() {
   const logDims = getResponsiveLogDimensions();
+  const isPhone = canvas.width < 480;
+  const isTablet = canvas.width < 768;
+
+  // Text offsets within logs — adjust per device to reposition text on the log image
+  const textOffsetX  = isPhone ? 30  : isTablet ? 50  : 80;
+  const textOffsetY  = isPhone ? 10  : isTablet ? 12  : 15;
+  const textLineHeight = isPhone ? 25 : isTablet ? 75 : 110;
 
   // Logs - recreated on resize with responsive sizing
   logs = [
-    { x: canvas.width / 4, y: 300, width: 550 * logDims.widthScale, height: 220 * logDims.heightScale, image: null, rotation: 0, text: "Hello,\nI'm", txtsize: getResponsiveLogSize(105) },
-    { x: canvas.width / 3, y: 525, width: 700 * logDims.widthScale, height: 220 * logDims.heightScale, image: null, rotation: 0, text: " Ethan \n       Shek", txtsize: getResponsiveLogSize(105) },
-    { x: canvas.width / 2, y: 750, width: 615 * logDims.widthScale, height: 170 * logDims.heightScale, image: null, rotation: 0, text: "Highlights", txtsize: getResponsiveLogSize(110) },
-    { x: canvas.width / 1.28, y: 60, width: 550 * logDims.widthScale, height: 70 * logDims.heightScale, image: null, rotation: 0, text: "Click on the water and lillypads!", txtsize: getResponsiveLogSize(30) },
+    {
+      x: isPhone ? canvas.width / 3 : isTablet ? canvas.width / 2.5 : canvas.width / 4,
+      y: isPhone ? 160 : isTablet ? 298 : 348,
+      width: 550 * logDims.widthScale, height: 220 * logDims.heightScale, image: null, rotation: 0, text: "Hello,\nI'm", txtsize: getResponsiveLogSize(105),
+      textOffsetX, textOffsetY, textLineHeight
+    },
+    {
+      x: isPhone ? canvas.width / 2 : isTablet ? canvas.width / 2.2 : canvas.width / 3,
+      y: isPhone ? 250 : isTablet ? 488 : 573,
+      width: 700 * logDims.widthScale, height: 220 * logDims.heightScale, image: null, rotation: 0, text: " Ethan \n       Shek", txtsize: getResponsiveLogSize(105),
+      textOffsetX, textOffsetY, textLineHeight
+    },
+    {
+      x: isPhone ? canvas.width / 2 : isTablet ? canvas.width / 2 : canvas.width / 2,
+      y: isPhone ? 750 : isTablet ? 668 : 760,
+      width: 615 * logDims.widthScale, height: 170 * logDims.heightScale, image: null, rotation: 0, text: "Highlights", txtsize: getResponsiveLogSize(110),
+      textOffsetX, textOffsetY, textLineHeight
+    },
+    ...(!isPhone && !isTablet ? [{
+      x: canvas.width / 1.28,
+      y: 108,
+      width: 550 * logDims.widthScale, height: 70 * logDims.heightScale, image: null, rotation: 0, text: "Click on the water and lillypads!", txtsize: getResponsiveLogSize(30),
+      textOffsetX, textOffsetY
+    }] : []),
   ];
 
   // Lily pads - responsive layout based on viewport
-  const isMobile = canvas.width < 768;
-  const isPhone = canvas.width < 480;
-  const baseXOffset = isMobile ? canvas.width / 2 : canvas.width / 3;
-  const rightXOffset = isMobile ? canvas.width / 2 : canvas.width / 3 + 500;
+  // Phone: single centered column | Tablet: two closer columns | Desktop: original
+  const baseXOffset = isPhone ? canvas.width / 2 : isTablet ? canvas.width / 3     : canvas.width / 3;
+  const rightXOffset = isPhone ? canvas.width / 2 : isTablet ? canvas.width / 3 * 2 : canvas.width / 3 + 500;
+
+  // Y positions — phone stacks all 4 vertically, tablet/desktop use two rows
+  const padY1 = isPhone ? 900  : isTablet ? 1000 : 1100;
+  const padY2 = isPhone ? 1150 : isTablet ? 1450 : 1550;
+  const padY3 = isPhone ? 1400 : isTablet ? 1000 : 1100;
+  const padY4 = isPhone ? 1650 : isTablet ? 1450 : 1550;
+
+  // About pad position
+  const aboutX = isPhone ? canvas.width / 2  : isTablet ? canvas.width / 2 + 50 : canvas.width / 2 + 400;
+  const aboutY = isPhone ? 450 : isTablet ? 425 : 450;
 
   // Responsive lily pad sizing
   const mainPadRadius = getResponsiveLilyPadRadius(175);
@@ -63,32 +99,32 @@ function updateLogsAndLilyPads() {
   const aboutPadRadius = getResponsiveLilyPadRadius(270);
   const aboutPadBackRadius = getResponsiveLilyPadRadius(280);
   const decorPadRadius = getResponsiveLilyPadRadius(60);
-  const lilyPadTextSize = canvas.width < 480 ? 25 : (canvas.width < 768 ? 35 : 50);
+  const lilyPadTextSize = isPhone ? 25 : isTablet ? 35 : 50;
 
   lilyPads = [
-    { x: baseXOffset, y: 1100, radius: mainPadBackRadius, color: '#4CAF50' },
-    { x: baseXOffset, y: 1100, radius: mainPadRadius, image: 'images/pokeball2 ChatGPT.png', crop: { sx: 0, sy: 0, sw: 1024, sh: 1024 }, text: "Pokemon \n API Finder", txtsize: lilyPadTextSize, link: "client/pokemonAPI.html" },
+    { x: baseXOffset, y: padY1, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: baseXOffset, y: padY1, radius: mainPadRadius, image: 'images/pokeball2 ChatGPT.png', crop: { sx: 0, sy: 0, sw: 1024, sh: 1024 }, text: "Pokemon \n API Finder", txtsize: lilyPadTextSize, link: "client/pokemonAPI.html" },
 
-    { x: baseXOffset, y: 1550, radius: mainPadBackRadius, color: '#4CAF50' },
-    { x: baseXOffset, y: 1550, radius: mainPadRadius, image: 'images/Fruit Ninja2 ChatGPT.png', text: "Fruit Ninja", txtsize: lilyPadTextSize, link: "client/fruitNinja.html" },
+    { x: baseXOffset, y: padY2, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: baseXOffset, y: padY2, radius: mainPadRadius, image: 'images/Fruit Ninja2 ChatGPT.png', text: "Fruit Ninja", txtsize: lilyPadTextSize, link: "client/fruitNinja.html" },
 
-    { x: rightXOffset, y: 1100, radius: mainPadBackRadius, color: '#4CAF50' },
-    { x: rightXOffset, y: 1100, radius: mainPadRadius, image: 'images/anime-collage wallpapercom.jpg', crop: { sx: 0, sy: 0, sw: 400, sh: 490 }, text: "Crunchtime \n Magazine", txtsize: lilyPadTextSize, link: "client/crunchtime.html" },
+    { x: rightXOffset, y: padY3, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: rightXOffset, y: padY3, radius: mainPadRadius, image: 'images/anime-collage wallpapercom.jpg', crop: { sx: 0, sy: 0, sw: 400, sh: 490 }, text: "Crunchtime \n Magazine", txtsize: lilyPadTextSize, link: "client/crunchtime.html" },
 
-    { x: rightXOffset, y: 1550, radius: mainPadBackRadius, color: '#4CAF50' },
-    { x: rightXOffset, y: 1550, radius: mainPadRadius, image: 'images/pudgie_logo.png', text: "Logo Redesign", txtsize: lilyPadTextSize, link: "client/logoRedesign.html" },
+    { x: rightXOffset, y: padY4, radius: mainPadBackRadius, color: '#4CAF50' },
+    { x: rightXOffset, y: padY4, radius: mainPadRadius, image: 'images/pudgie_logo.png', text: "Logo Redesign", txtsize: lilyPadTextSize, link: "client/logoRedesign.html" },
 
-    { x: canvas.width / 2 + (isMobile ? 0 : 350), y: 350, radius: aboutPadBackRadius, color: '#4CAF50' },
-    { x: canvas.width / 2 + (isMobile ? 0 : 350), y: 350, radius: aboutPadRadius, image: 'images/EVS.png', crop: { sx: 900, sy: 1000, sw: 1500, sh: 1500 }, link: "client/about.html" },
+    { x: aboutX, y: aboutY, radius: aboutPadBackRadius, color: '#4CAF50' },
+    { x: aboutX, y: aboutY, radius: aboutPadRadius, image: 'images/EVS.png', crop: { sx: 900, sy: 1000, sw: 1500, sh: 1500 }, link: "client/about.html" },
 
-    // Additional decore lily pads - responsive positioning and sizing
-    { x: isMobile ? canvas.width * 0.1 : 135, y: 860, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' }, //left top
-    { x: isMobile ? canvas.width * 0.15 : 200, y: 1300, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //left middle
-    { x: isMobile ? canvas.width * 0.12 : 180, y: 1700, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' }, //left bottom
+    // Additional decor lily pads - responsive positioning and sizing
+    { x: isPhone ? canvas.width * 0.08 : isTablet ? canvas.width * 0.1 : 135, y: 860,  radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' },   //left top
+    { x: isPhone ? canvas.width * 0.1  : isTablet ? canvas.width * 0.15 : 200, y: 1300, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' },  //left middle
+    { x: isPhone ? canvas.width * 0.09 : isTablet ? canvas.width * 0.12 : 180, y: 1700, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' },   //left bottom
 
-    { x: isMobile ? canvas.width * 0.9 : canvas.width - 135, y: 900, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //right top
-    { x: isMobile ? canvas.width * 0.85 : canvas.width - 200, y: 1320, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' }, //right middle
-    { x: isMobile ? canvas.width * 0.88 : canvas.width - 180, y: 1700, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //right bottom
+    { x: isPhone ? canvas.width * 0.92 : isTablet ? canvas.width * 0.9  : canvas.width - 135, y: 900,  radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //right top
+    { x: isPhone ? canvas.width * 0.88 : isTablet ? canvas.width * 0.85 : canvas.width - 200, y: 1320, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/lotus flower ChatGPT.png' },  //right middle
+    { x: isPhone ? canvas.width * 0.9  : isTablet ? canvas.width * 0.88 : canvas.width - 180, y: 1700, radius: decorPadRadius, color: '#4CAF50', lotusImage: 'images/Wlotus flower ChatGPT.png' }, //right bottom
   ];
 }
 
@@ -251,7 +287,8 @@ class Koi {
 
 // Load all images and start animation
 loadImages(() => {
-  for (let i = 0; i < 50; i++) {
+  const koiCount = window.innerWidth < 480 ? 25 : window.innerWidth < 768 ? 25 : 50;
+  for (let i = 0; i < koiCount; i++) {
     koiArray.push(new Koi(loadedImages[i % loadedImages.length]));
   }
 

@@ -46,37 +46,69 @@ let lilyPads = [];
 
 // Setup lilyPads positions dynamically
 function setupLilyPads() {
+    const w = parseFloat(canvas.style.width) || window.innerWidth;
+    const isMobile = w < 768;
+    const isPhone = w < 480;
+
+    const padRadius = isPhone ? 70 : (isMobile ? 90 : 125);
+    const padBack = padRadius + 10;
+    const decorRadius = isPhone ? 40 : 60;
+    const txtsize = isPhone ? 20 : (isMobile ? 26 : 35);
+
+    // Project pad positions: single column on phone, 2-col on tablet, 3-col on desktop
+    let p;
+    if (isPhone) {
+        p = [
+            { x: w * 0.5, y: 220 },
+            { x: w * 0.5, y: 430 },
+            { x: w * 0.5, y: 640 },
+            { x: w * 0.5, y: 850 },
+        ];
+    } else if (isMobile) {
+        p = [
+            { x: w * 0.28, y: 280 },
+            { x: w * 0.72, y: 280 },
+            { x: w * 0.28, y: 560 },
+            { x: w * 0.72, y: 560 },
+        ];
+    } else {
+        p = [
+            { x: 450, y: 350 },
+            { x: 800, y: 350 },
+            { x: 1150, y: 350 },
+            { x: 600, y: 660 },
+        ];
+    }
+
     lilyPads = [
-        { x: 450, y: 350, radius: 135, color: '#4CAF50' },
-        { x: 450, y: 350, radius: 125, image: '../images/pokeball2 ChatGPT.png', crop: { sx: 0, sy: 0, sw: 1024, sh: 1024 }, text: "Pokemon \n API Finder", txtsize: 35, link: "../client/pokemonAPI.html" },
+        { x: p[0].x, y: p[0].y, radius: padBack, color: '#4CAF50' },
+        { x: p[0].x, y: p[0].y, radius: padRadius, image: '../images/pokeball2 ChatGPT.png', crop: { sx: 0, sy: 0, sw: 1024, sh: 1024 }, text: "Pokemon \n API Finder", txtsize, link: "../client/pokemonAPI.html" },
 
-        { x: 800, y: 350, radius: 135, color: '#4CAF50' },
-        { x: 800, y: 350, radius: 125, image: '../images/Fruit Ninja2 ChatGPT.png', text: "Fruit Ninja", txtsize: 35, link: "../client/fruitNinja.html" },
+        { x: p[1].x, y: p[1].y, radius: padBack, color: '#4CAF50' },
+        { x: p[1].x, y: p[1].y, radius: padRadius, image: '../images/Fruit Ninja2 ChatGPT.png', text: "Fruit Ninja", txtsize, link: "../client/fruitNinja.html" },
 
-        { x: 1150, y: 350, radius: 135, color: '#4CAF50' },
-        { x: 1150, y: 350, radius: 125, image: '../images/anime-collage wallpapercom.jpg', crop: { sx: 0, sy: 0, sw: 400, sh: 490 }, text: "Crunchtime \n Magazine", txtsize: 35, link: "../client/crunchtime.html" },
+        { x: p[2].x, y: p[2].y, radius: padBack, color: '#4CAF50' },
+        { x: p[2].x, y: p[2].y, radius: padRadius, image: '../images/anime-collage wallpapercom.jpg', crop: { sx: 0, sy: 0, sw: 400, sh: 490 }, text: "Crunchtime \n Magazine", txtsize, link: "../client/crunchtime.html" },
 
-        { x: 600, y: 660, radius: 135, color: '#4CAF50' },
-        { x: 600, y: 660, radius: 125, image: '../images/pudgie_logo.png', text: "Logo Redesign", txtsize: 35, link: "../client/logoRedesign.html" },
+        { x: p[3].x, y: p[3].y, radius: padBack, color: '#4CAF50' },
+        { x: p[3].x, y: p[3].y, radius: padRadius, image: '../images/pudgie_logo.png', text: "Logo Redesign", txtsize, link: "../client/logoRedesign.html" },
 
+        //decor lily pads
+        { x: isMobile ? w * 0.08 : 135, y: 160, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left top
+        { x: isMobile ? w * 0.12 : 200, y: 400, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //left middle
+        { x: isMobile ? w * 0.10 : 180, y: 670, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left bottom
 
-        //decor lilly pads
-        { x: 135, y: 160, radius: 60, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left top
-        { x: 200, y: 400, radius: 60, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //left middle
-        { x: 180, y: 670, radius: 60, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left bottom
+        { x: isMobile ? w * 0.92 : 1280, y: 160, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right top
+        { x: isMobile ? w * 0.88 : 1430, y: 400, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //right middle
+        { x: isMobile ? w * 0.90 : 1280, y: 670, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right bottom
 
-        { x: 1280, y: 160, radius: 60, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right top
-        { x: 1430, y: 400, radius: 60, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //right middle
-        { x: 1280, y: 670, radius: 60, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right bottom
+        { x: isMobile ? w * 0.08 : 135, y: 950, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left top
+        { x: isMobile ? w * 0.12 : 200, y: 1300, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //left middle
+        { x: isMobile ? w * 0.10 : 180, y: 1700, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left bottom
 
-        { x: 135, y: 950, radius: 60, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left top
-        { x: 200, y: 1300, radius: 60, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //left middle
-        { x: 180, y: 1700, radius: 60, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //left bottom
-
-        { x: 1450, y: 900, radius: 60, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right top
-        { x: 1380, y: 1320, radius: 60, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //right middle
-        { x: 1240, y: 1700, radius: 60, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right bottom
-
+        { x: isMobile ? w * 0.92 : 1450, y: 900, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right top
+        { x: isMobile ? w * 0.88 : 1380, y: 1320, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/lotus flower ChatGPT.png' }, //right middle
+        { x: isMobile ? w * 0.90 : 1240, y: 1700, radius: decorRadius, color: '#4CAF50', lotusImage: '../images/Wlotus flower ChatGPT.png' }, //right bottom
     ];
 }
 
@@ -113,7 +145,8 @@ class Koi {
         this.img = img;
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = 70 + Math.random() * 50;
+        const sizeScale = (parseFloat(canvas.style.width) || window.innerWidth) < 768 ? 0.5 : 1;
+        this.size = (70 + Math.random() * 50) * sizeScale;
         this.baseSpeed = 0.2 + Math.random() * 0.3;
         this.speedVariation = 0.05 + Math.random() * 0.1;
         this.speedPhase = Math.random() * Math.PI * 2;

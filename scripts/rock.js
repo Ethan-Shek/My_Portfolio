@@ -9,9 +9,11 @@ export function createRockBorders() {
   rightContainer.innerHTML = '';
 
   const rockSrc = 'images/rocks2 ChatGPT.png';
-  const rockWidth = 150; // width on screen
-  const rockHeight = 100; // use this to calculate number of rocks
-  const rockMargin = -30;
+
+  const w = window.innerWidth;
+  const rockWidth  = w < 480 ? 120 : w < 768 ? 130 : 170;
+  const rockHeight = w < 480 ? 75  : w < 768 ? 95  : 120;
+  const rockMargin = w < 480 ? -15 : w < 768 ? -20 : -30;
 
   const pondHeight = pond.scrollHeight;
   const numRocks = Math.ceil(pondHeight / (rockHeight + rockMargin));

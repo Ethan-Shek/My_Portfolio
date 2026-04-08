@@ -162,6 +162,20 @@
       overflow: visible;
     }
 
+    @media (max-width: 48rem) {
+      .log-image {
+        top: 6%;
+        transform: translate(-50%, -50%) scale(0.75, 0.4);
+      }
+    }
+
+    @media (max-width: 30rem) {
+      .log-image {
+        top: 5%;
+        transform: translate(-50%, -50%) scale(0.45, 0.35);
+      }
+    }
+
     .EVS-image {
       position: absolute;
       width: 200px;
@@ -222,6 +236,45 @@
     .back-button:hover {
       background-color: rgba(255, 255, 255, 0.2);
       transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .project-content {
+        top: 60px;
+        transform: translateX(-50%);
+        width: 90%;
+        padding: 20px;
+      }
+      .h1-base, .h2-base, .h3-base, .h4-base { display: none; }
+      .h1-top {
+        position: relative;
+        top: auto;
+        left: auto;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 0 #D1232A;
+      }
+      .h2-top, .h3-top, .h4-top {
+        font-size: 1.4rem;
+        text-shadow: 1px 1px 0 #D1232A;
+      }
+      .EVS-image {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        width: 120px;
+        margin: 10px auto;
+        display: block;
+      }
+      .food-image, .cut-image { display: none; }
+      p { font-size: 1rem; line-height: 1.7rem; }
+      .back-button { font-size: 1.1rem; padding: 10px 22px; }
+    }
+
+    @media (max-width: 480px) {
+      .h1-top { font-size: 2rem; }
+      .h2-top, .h3-top, .h4-top { font-size: 1.2rem; }
+      p { font-size: 0.9rem; line-height: 1.5rem; }
     }
   </style>
 </head>

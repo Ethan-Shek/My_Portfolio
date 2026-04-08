@@ -10,15 +10,15 @@ body {
 .pond-container {
   position: relative;
   width: 100%;
-  height: 2000px;
+  height: 125rem;
   background: linear-gradient(to bottom, #7ec8e3, #4fa3d1);
   overflow: hidden;
 }
 
 /* Mobile responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .pond-container {
-    height: 2000px;
+    height: 125rem;
     /* taller on mobile since content stacks vertically */
   }
 }
@@ -88,12 +88,21 @@ body {
   z-index: 4;
 }
 
+@media (min-width: 22.5rem) and (max-width: 26.25rem) {
+  .rocks.left {
+    left: -10rem;
+  }
+  .rocks.right {
+    right: -0.625rem;
+  }
+}
+
 .rocks.left {
-  left: -60px;
+  left: -3.75rem;
 }
 
 .rocks.right {
-  right: -60px;
+  right: -3.75rem;
 }
 
 .rocks.left .rock,
@@ -115,7 +124,7 @@ canvas {
 .log-text {
   position: absolute;
   font-family: 'Modak', sans-serif;
-  font-size: 36px;
+  font-size: 2.25rem;
   font-weight: normal;
   color: #fff;
   text-align: center;
@@ -168,7 +177,7 @@ canvas {
   font-weight: 400;
   -webkit-text-stroke: 1px rgba(92, 64, 51);
   text-shadow: 2px 2px 6px #F1E9D6;
-  padding-bottom: 30px;
+  padding-bottom: 1.875rem;
   /* space from the bottom edge */
   z-index: 10;
   /* ensures it appears on top of the bridge canvas */
@@ -187,10 +196,10 @@ canvas {
   /* center the flex container horizontally */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .footer-overlay {
     font-size: 1rem;
-    padding-bottom: 20px;
+    padding-bottom: 1.25rem;
     bottom: 1rem;
   }
 
@@ -200,7 +209,7 @@ canvas {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .footer-overlay {
     font-size: 0.8rem;
     bottom: 0.5rem;
@@ -247,7 +256,7 @@ span.spacer {
 }
 
 .dragon-overlay {
-  width: 520px;
+  width: 32.5rem;
   height: auto;
   display: block;
   animation: floatDragon 5s ease-in-out infinite alternate;
@@ -255,17 +264,21 @@ span.spacer {
   user-select: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .dragon-overlay {
-    width: 280px;
-    /* smaller on tablet */
+    width: 17.5rem;
+  }
+  .dragon-header {
+    top: -4rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .dragon-overlay {
-    width: 180px;
-    /* very small on phone */
+    width: 16rem;
+  }
+  .dragon-header {
+    top: -4rem;
   }
 }
 
@@ -281,8 +294,8 @@ span.spacer {
   position: absolute;
   bottom: 13.1rem;
   left: -6.5rem;
-  width: 500px;
-  height: 150px;
+  width: 31.25rem;
+  height: 9.375rem;
   z-index: 21;
   animation: floatText 5s ease-in-out infinite alternate;
   pointer-events: none; /* only text clickable */
@@ -293,42 +306,42 @@ span.spacer {
   position: absolute;
   bottom: 13.8rem;
   left: 3.3rem;
-  width: 500px;
-  height: 150px;
+  width: 31.25rem;
+  height: 9.375rem;
   z-index: 21;
   animation: floatText 5s ease-in-out infinite alternate;
   pointer-events: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .curved-projects {
     bottom: 10rem;
     left: -3rem;
-    width: 300px;
-    height: 100px;
+    width: 18.75rem;
+    height: 6.25rem;
   }
 
   .curved-about {
     bottom: 10.5rem;
-    left: 1rem;
-    width: 300px;
-    height: 100px;
+    left: 3rem;
+    width: 18.75rem;
+    height: 6.25rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .curved-projects {
-    bottom: 8rem;
-    left: -2rem;
-    width: 220px;
-    height: 80px;
+    bottom: 6.7rem;
+    left: -4rem;
+    width: 13.75rem;
+    height: 5rem;
   }
 
   .curved-about {
-    bottom: 8.5rem;
+    bottom: 6.5rem;
     left: 0;
-    width: 220px;
-    height: 80px;
+    width: 13.75rem;
+    height: 5rem;
   }
 }
 
@@ -338,8 +351,8 @@ span.spacer {
   fill: rgb(255, 175, 27);
   font-family: 'Modak', cursive;
   font-size: 2rem;
-  stroke: rgb(171, 104, 46); 
-  stroke-width: 3px; 
+  stroke: rgb(171, 104, 46);
+  stroke-width: 3px;
   paint-order: stroke fill; /* draws the stroke under the fill */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
   pointer-events: auto;
@@ -347,7 +360,7 @@ span.spacer {
   transition: fill 0.3s ease;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .curved-projects text,
   .curved-about text {
     font-size: 1.3rem;
@@ -355,31 +368,31 @@ span.spacer {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .curved-projects text,
   .curved-about text {
-    font-size: 1rem;
+    font-size: 1.5rem;
     stroke-width: 1.5px;
   }
 }
 
 .curved-projects text:hover,
 .curved-about text:hover {
-  fill: #FFD700; 
+  fill: #FFD700;
 }
 
 @keyframes floatText {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); } 
+  50% { transform: translateY(-8px); }
   100% { transform: translateY(0); }
 }
 
 /* Mobile-specific improvements */
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   /* Increase touch target sizes */
   .curved-projects svg,
   .curved-about svg {
-    min-height: 80px;
+    min-height: 5rem;
   }
 
   /* Prevent horizontal scroll on mobile */
