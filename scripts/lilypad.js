@@ -54,7 +54,7 @@ export function drawLilyPad(ctx, pad, time, mouse) {
       pad._img = new Image();
       pad._img.src = image;
     }
-    if (pad._img.complete || pad._img.naturalWidth) {
+    if (pad._img.complete && pad._img.naturalWidth > 0) {
       ctx.save();
       ctx.clip();
 
@@ -117,7 +117,7 @@ export function drawLilyPad(ctx, pad, time, mouse) {
     }
 
     // Use naturalWidth to check if image is loaded
-    if (pad._lotusImg.complete || pad._lotusImg.naturalWidth) {
+    if (pad._lotusImg.complete && pad._lotusImg.naturalWidth > 0) {
       const lotusSize = drawRadius * 1.50; // scale relative to lily pad
       ctx.drawImage(
         pad._lotusImg,

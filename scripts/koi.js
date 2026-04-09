@@ -315,50 +315,54 @@ window.addEventListener("load", () => {
 }, { once: true });
 
 function animate(time) {
-  ctx.clearRect(0, 0, cw, ch);
+  try {
+    ctx.clearRect(0, 0, cw, ch);
 
-  // Draw fading ripples
-  for (let i = ripples.length - 1; i >= 0; i--) {
-    const ripple = ripples[i];
-    ripple.radius += 2;          // expand size
-    ripple.opacity -= 0.01;      // fade out
+    // Draw fading ripples
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const ripple = ripples[i];
+      ripple.radius += 2;
+      ripple.opacity -= 0.01;
 
-    if (ripple.opacity <= 0) {
-      ripples.splice(i, 1);      // remove finished ripples
-      continue;
+      if (ripple.opacity <= 0) {
+        ripples.splice(i, 1);
+        continue;
+      }
+
+      ctx.beginPath();
+      ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(100, 200, 255, ${ripple.opacity})`;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "rgba(100, 200, 255, 0.4)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
     }
 
-    ctx.beginPath();
-    ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(100, 200, 255, ${ripple.opacity})`;
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = "rgba(100, 200, 255, 0.4)";
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    // Water background
+    ctx.fillStyle = "rgba(173, 216, 230, 0.07)";
+    ctx.fillRect(0, 0, cw, ch);
+
+    // Draw koi fish
+    koiArray.forEach(koi => {
+      koi.update();
+      koi.draw();
+    });
+
+    // Draw logs
+    logs.forEach(log => {
+      drawLog(ctx, log, time);
+    });
+
+    // Draw lily pads on top
+    lilyPads.forEach(pad => {
+      drawLilyPad(ctx, pad, time, mouse);
+    });
+
+    // Draw bridge near bottom
+    drawBridge(ctx, canvas, bridge);
+  } catch (e) {
+    console.error('animate error:', e);
   }
-
-  // Water background
-  ctx.fillStyle = "rgba(173, 216, 230, 0.07)";
-  ctx.fillRect(0, 0, cw, ch);
-
-  // Draw koi fish
-  koiArray.forEach(koi => {
-    koi.update();
-    koi.draw();
-  });
-
-  // Draw logs
-  logs.forEach(log => {
-    drawLog(ctx, log, time);
-  });
-
-  // Draw lily pads on top
-  lilyPads.forEach(pad => {
-    drawLilyPad(ctx, pad, time, mouse);
-  });
-
-  // Draw bridge near bottom
-  drawBridge(ctx, canvas, bridge);
   requestAnimationFrame(animate);
 }
 

@@ -13,7 +13,7 @@ export function drawBridge(ctx, canvas, bridge) {
     bridge._img.src = image;
   }
 
-  if (bridge._img.complete) {
+  if (bridge._img.complete && bridge._img.naturalWidth > 0) {
     const width = bridge._img.width * scale;
     const height = bridge._img.height * scale;
     const step = width * (1 - overlap);
