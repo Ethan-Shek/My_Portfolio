@@ -22,8 +22,8 @@ export function drawLilyPad(ctx, pad, time, mouse) {
   const floatY = y + Math.cos(time / 2500 + y) * 16;
 
   // Initialize scale properties
-  pad.currentScale ??= 1;
-  pad.targetScale ??= 1;
+  if (pad.currentScale == null) pad.currentScale = 1;
+  if (pad.targetScale == null) pad.targetScale = 1;
 
   // Detect hover
   const dx = mouse.x - floatX;

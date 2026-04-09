@@ -297,9 +297,13 @@ class Koi {
 }
 
 // Wait for full layout before sizing canvas and starting animation
-// This fixes iOS Safari where clientHeight = 0 on initial script execution
-window.addEventListener("load", () => {
+// Retry until canvas has non-zero dimensions, then start
+function init() {
   resizeCanvas();
+  if (cw === 0 || ch === 0) {
+    requestAnimationFrame(init);
+    return;
+  }
 
   loadImages(() => {
     const koiCount = window.innerWidth < 480 ? 25 : window.innerWidth < 768 ? 25 : 50;
@@ -312,7 +316,9 @@ window.addEventListener("load", () => {
       animate();
     });
   });
-}, { once: true });
+}
+
+document.addEventListener('DOMContentLoaded', init);
 
 function animate(time) {
   try {
