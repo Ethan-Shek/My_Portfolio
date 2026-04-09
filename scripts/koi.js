@@ -300,18 +300,21 @@ class Koi {
 // Retry until canvas has non-zero dimensions, then start
 function init() {
   resizeCanvas();
+  console.log('[koi] init cw=' + cw + ' ch=' + ch);
   if (cw === 0 || ch === 0) {
     requestAnimationFrame(init);
     return;
   }
 
   loadImages(() => {
+    console.log('[koi] images loaded, creating fish');
     const koiCount = window.innerWidth < 480 ? 25 : window.innerWidth < 768 ? 25 : 50;
     for (let i = 0; i < koiCount; i++) {
       koiArray.push(new Koi(loadedImages[i % loadedImages.length]));
     }
 
     loadLogImages(() => {
+      console.log('[koi] log images loaded, starting animate');
       assignLogImages();
       animate();
     });
@@ -320,7 +323,9 @@ function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
+let _firstFrame = true;
 function animate(time) {
+  if (_firstFrame) { console.log('[koi] animate running cw=' + cw + ' ch=' + ch); _firstFrame = false; }
   try {
     ctx.clearRect(0, 0, cw, ch);
 
