@@ -1,6 +1,7 @@
 import { drawLilyPad } from './lilypad.js';
 import { drawLog } from './log.js';
 import { drawBridge } from './bridge.js';
+console.log('[koi] module loaded');
 
 const canvas = document.getElementById("koiCanvas");
 const ctx = canvas.getContext("2d");
@@ -321,7 +322,8 @@ function init() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// Call init directly — modules are deferred so DOM is ready, retry handles layout timing
+init();
 
 let _firstFrame = true;
 function animate(time) {
