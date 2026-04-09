@@ -155,12 +155,6 @@ function resizeCanvas() {
 }
 
 window.addEventListener("resize", resizeCanvas);
-// Wait for layout before sizing canvas — fixes iOS clientHeight = 0 on load
-if (document.readyState === "complete") {
-  resizeCanvas();
-} else {
-  window.addEventListener("load", resizeCanvas, { once: true });
-}
 
 canvas.addEventListener("mousemove", (e) => {
   const rect = canvas.getBoundingClientRect();
@@ -188,12 +182,11 @@ canvas.addEventListener("mouseup", () => {
 
 // Touch event support for mobile devices
 canvas.addEventListener("touchmove", (e) => {
-  e.preventDefault(); // prevent scrolling
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches[0];
   mouse.x = touch.clientX - rect.left;
   mouse.y = touch.clientY - rect.top;
-}, false);
+}, { passive: true });
 
 canvas.addEventListener("touchstart", (e) => {
   e.preventDefault();
@@ -224,34 +217,36 @@ const bridge = {
 
 function loadImages(callback) {
   let count = 0;
-  const total = koiImages.length;
   koiImages.forEach((src, index) => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
       loadedImages[index] = img;
-      if (++count === total) callback();
+      count++;
+      if (count === koiImages.length) callback();
     };
     img.onerror = () => {
       console.error(`Failed to load ${src}`);
-      if (++count === total) callback();
+      count++;
+      if (count === koiImages.length) callback();
     };
   });
 }
 
 function loadLogImages(callback) {
   let count = 0;
-  const total = logImages.length;
   logImages.forEach((src, index) => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
       loadedLogImages[index] = img;
-      if (++count === total) callback();
+      count++;
+      if (count === logImages.length) callback();
     };
     img.onerror = () => {
       console.error(`Failed to load ${src}`);
-      if (++count === total) callback();
+      count++;
+      if (count === logImages.length) callback();
     };
   });
 }
@@ -310,18 +305,23 @@ class Koi {
   }
 }
 
-// Load all images and start animation
-loadImages(() => {
-  const koiCount = window.innerWidth < 480 ? 25 : window.innerWidth < 768 ? 25 : 50;
-  for (let i = 0; i < koiCount; i++) {
-    koiArray.push(new Koi(loadedImages[i % loadedImages.length]));
-  }
+// Wait for full layout before sizing canvas and starting animation
+// This fixes iOS Safari where clientHeight = 0 on initial script execution
+window.addEventListener("load", () => {
+  resizeCanvas();
 
-  loadLogImages(() => {
-    assignLogImages();
-    animate();
+  loadImages(() => {
+    const koiCount = window.innerWidth < 480 ? 25 : window.innerWidth < 768 ? 25 : 50;
+    for (let i = 0; i < koiCount; i++) {
+      koiArray.push(new Koi(loadedImages[i % loadedImages.length]));
+    }
+
+    loadLogImages(() => {
+      assignLogImages();
+      animate();
+    });
   });
-});
+}, { once: true });
 
 function animate(time) {
   ctx.clearRect(0, 0, cw, ch);
@@ -367,7 +367,7 @@ function animate(time) {
   });
 
   // Draw bridge near bottom
-  drawBridge(ctx, cw, ch, bridge);
+  drawBridge(ctx, canvas, bridge);
   requestAnimationFrame(animate);
 }
 

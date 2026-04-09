@@ -65,7 +65,7 @@ body {
   height: 100%;
   z-index: 2;
   /* fish under blue tint and lily pads */
-  touch-action: none; /* enable custom touch handling */
+  touch-action: pan-y; /* allow vertical scrolling, block horizontal */
 }
 
 /* Lily pads layer */
