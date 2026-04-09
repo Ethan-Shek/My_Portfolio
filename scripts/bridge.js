@@ -1,9 +1,9 @@
-export function drawBridge(ctx, canvas, bridge) {
+export function drawBridge(ctx, cssW, cssH, bridge) {
   const {
     image,
-    y = canvas.height - 150, // vertical position
+    y = cssH - 150,
     scale = 1.0,
-    overlap = 0.2, // fraction of width to overlap
+    overlap = 0.2,
     text = null,
     txtsize = 60
   } = bridge;
@@ -20,12 +20,10 @@ export function drawBridge(ctx, canvas, bridge) {
 
     ctx.save();
 
-    // Draw bridge PNGs tiled horizontally
-    for (let x = 0; x < canvas.width + width; x += step) {
+    for (let x = 0; x < cssW + width; x += step) {
       ctx.drawImage(bridge._img, x, y - height / 2, width, height);
     }
 
-    // Draw text (change it click link?)
     if (text) {
       ctx.font = `${txtsize}px 'Modak', sans-serif`;
       ctx.fillStyle = "#FFFFF0";
@@ -36,11 +34,7 @@ export function drawBridge(ctx, canvas, bridge) {
       const lineHeight = txtsize * 1.2;
 
       lines.forEach((line, i) => {
-        ctx.fillText(
-          line,
-          canvas.width / 2, // centered horizontally
-          y - height / 2 + 50 + i * lineHeight // a little above the bridge surface
-        );
+        ctx.fillText(line, cssW / 2, y - height / 2 + 50 + i * lineHeight);
       });
     }
 

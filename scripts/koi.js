@@ -155,7 +155,12 @@ function resizeCanvas() {
 }
 
 window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+// Wait for layout before sizing canvas — fixes iOS clientHeight = 0 on load
+if (document.readyState === "complete") {
+  resizeCanvas();
+} else {
+  window.addEventListener("load", resizeCanvas, { once: true });
+}
 
 canvas.addEventListener("mousemove", (e) => {
   const rect = canvas.getBoundingClientRect();
@@ -219,29 +224,35 @@ const bridge = {
 
 function loadImages(callback) {
   let count = 0;
+  const total = koiImages.length;
   koiImages.forEach((src, index) => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
       loadedImages[index] = img;
-      count++;
-      if (count === koiImages.length) callback();
+      if (++count === total) callback();
     };
-    img.onerror = () => console.error(`Failed to load ${src}`);
+    img.onerror = () => {
+      console.error(`Failed to load ${src}`);
+      if (++count === total) callback();
+    };
   });
 }
 
 function loadLogImages(callback) {
   let count = 0;
+  const total = logImages.length;
   logImages.forEach((src, index) => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
       loadedLogImages[index] = img;
-      count++;
-      if (count === logImages.length) callback();
+      if (++count === total) callback();
     };
-    img.onerror = () => console.error(`Failed to load ${src}`);
+    img.onerror = () => {
+      console.error(`Failed to load ${src}`);
+      if (++count === total) callback();
+    };
   });
 }
 
@@ -356,7 +367,7 @@ function animate(time) {
   });
 
   // Draw bridge near bottom
-  drawBridge(ctx, canvas, bridge);
+  drawBridge(ctx, cw, ch, bridge);
   requestAnimationFrame(animate);
 }
 
