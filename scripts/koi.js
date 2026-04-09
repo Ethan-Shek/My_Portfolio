@@ -245,7 +245,7 @@ function loadLogImages(callback) {
 // Assign log images to log objects
 function assignLogImages() {
   logs.forEach((log, i) => {
-    log.image = loadedLogImages[i % loadedLogImages.length];
+    log.image = loadedLogImages.length > 0 ? loadedLogImages[i % loadedLogImages.length] : null;
   });
 }
 

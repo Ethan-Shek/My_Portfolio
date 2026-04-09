@@ -12,7 +12,11 @@ export function drawLog(ctx, log, time) {
   ctx.translate(floatX, floatY);
   ctx.rotate(log.rotation);
 
-  // Draw the log image
+  // Draw the log image (guard against image not loaded or missing)
+  if (!image || !image.complete || !image.naturalWidth) {
+    ctx.restore();
+    return;
+  }
   ctx.drawImage(image, -width / 2, -height / 2, width, height);
 
   // Draw multi-line text
