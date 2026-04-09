@@ -135,20 +135,11 @@ function updateLogsAndLilyPads() {
 
 function resizeCanvas() {
   const container = canvas.parentElement;
-  const dpr = window.devicePixelRatio || 1;
-  const cssW = container.clientWidth;
-  const cssH = container.clientHeight;
+  cw = container.clientWidth;
+  ch = container.clientHeight;
 
-  cw = cssW;
-  ch = cssH;
-
-  canvas.width = cssW * dpr;
-  canvas.height = cssH * dpr;
-  canvas.style.width = cssW + 'px';
-  canvas.style.height = cssH + 'px';
-
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.scale(dpr, dpr);
+  canvas.width = cw;
+  canvas.height = ch;
 
   // Recalculate logs and lily pads positions when canvas resizes
   updateLogsAndLilyPads();
