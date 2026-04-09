@@ -82,7 +82,12 @@
 
   <!-- DEBUG: remove after fixing iOS issue -->
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>eruda.init();</script>
+  <script>
+    eruda.init();
+    ['./scripts/lilypad.js','./scripts/log.js','./scripts/bridge.js','./scripts/koi.js'].forEach(function(f){
+      fetch(f).then(function(r){ console.log(f + ' → ' + r.status); }).catch(function(e){ console.log(f + ' FAILED: ' + e); });
+    });
+  </script>
 
 </body>
 </html>
