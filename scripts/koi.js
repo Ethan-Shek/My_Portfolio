@@ -174,12 +174,6 @@ function resizeCanvas() {
 
 window.addEventListener("resize", resizeCanvas);
 
-canvas.addEventListener("mousemove", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  mouse.x = e.clientX - rect.left;
-  mouse.y = e.clientY - rect.top;
-});
-
 canvas.addEventListener("mousedown", (e) => {
   const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
@@ -207,7 +201,6 @@ canvas.addEventListener("touchmove", (e) => {
 }, { passive: true });
 
 canvas.addEventListener("touchstart", (e) => {
-  e.preventDefault();
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches[0];
   const x = touch.clientX - rect.left;
@@ -220,11 +213,15 @@ canvas.addEventListener("touchstart", (e) => {
     opacity: 0.6,
     growth: 1 + Math.random() * 2
   });
-}, false);
+}, { passive: true });
 
 canvas.addEventListener("touchend", (e) => {
-  e.preventDefault();
-}, false);
+  const rect = canvas.getBoundingClientRect();
+  const touch = e.changedTouches[0];
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+  handleCanvasClick(x, y);
+}, { passive: true });
 
 const bridge = {
   image: 'images/bridge ChatGPT.png',
@@ -429,17 +426,6 @@ canvas.addEventListener("click", (event) => {
   const mouseX = event.clientX - rect.left;
   const mouseY = event.clientY - rect.top;
   handleCanvasClick(mouseX, mouseY);
-});
-
-// Touch click handler
-canvas.addEventListener("touchend", (event) => {
-  if (event.changedTouches.length > 0) {
-    const rect = canvas.getBoundingClientRect();
-    const touch = event.changedTouches[0];
-    const mouseX = touch.clientX - rect.left;
-    const mouseY = touch.clientY - rect.top;
-    handleCanvasClick(mouseX, mouseY);
-  }
 });
 
 canvas.addEventListener("mousemove", (e) => {
