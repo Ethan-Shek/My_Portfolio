@@ -173,6 +173,7 @@ function resizeCanvas() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   updateLogsAndLilyPads();
+  assignLogImages();
 }
 
 window.addEventListener("resize", resizeCanvas);
