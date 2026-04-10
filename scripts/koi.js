@@ -2,7 +2,7 @@ import { drawLilyPad } from './lilypad.js';
 import { drawBridge } from './bridge.js';
 
 function drawLog(ctx, log, time) {
-  const { x, y, width = 200, height = 80, image, rotationSpeed = 0.0004, text, txtsize} = log;
+  const { x, y, width = 200, height = 80, image, rotationSpeed = 0.00005, text, txtsize} = log;
   if (log.rotation === undefined) log.rotation = 0;
   log.rotation += rotationSpeed;
   const floatX = x + Math.sin(time / 4000 + x) * 6;
