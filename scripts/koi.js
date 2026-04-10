@@ -1,6 +1,5 @@
 import { drawLilyPad } from './lilypad.js';
 import { drawBridge } from './bridge.js';
-console.log('[koi] module loaded');
 
 function drawLog(ctx, log, time) {
   const { x, y, width = 200, height = 80, image, rotationSpeed = 0.0004, text, txtsize} = log;
@@ -165,10 +164,14 @@ function resizeCanvas() {
   cw = container.clientWidth;
   ch = container.clientHeight;
 
-  canvas.width = cw;
-  canvas.height = ch;
+  // Cap DPR at 2 to avoid hitting iOS canvas size limits
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  canvas.style.width = cw + 'px';
+  canvas.style.height = ch + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  // Recalculate logs and lily pads positions when canvas resizes
   updateLogsAndLilyPads();
 }
 
@@ -324,21 +327,18 @@ class Koi {
 // Retry until canvas has non-zero dimensions, then start
 function init() {
   resizeCanvas();
-  console.log('[koi] init cw=' + cw + ' ch=' + ch);
   if (cw === 0 || ch === 0) {
     requestAnimationFrame(init);
     return;
   }
 
   loadImages(() => {
-    console.log('[koi] images loaded, creating fish');
     const koiCount = window.innerWidth < 480 ? 25 : window.innerWidth < 768 ? 25 : 50;
     for (let i = 0; i < koiCount; i++) {
       koiArray.push(new Koi(loadedImages[i % loadedImages.length]));
     }
 
     loadLogImages(() => {
-      console.log('[koi] log images loaded, starting animate');
       assignLogImages();
       animate();
     });
@@ -348,9 +348,7 @@ function init() {
 // Call init directly — modules are deferred so DOM is ready, retry handles layout timing
 init();
 
-let _firstFrame = true;
 function animate(time) {
-  if (_firstFrame) { console.log('[koi] animate running cw=' + cw + ' ch=' + ch); _firstFrame = false; }
   try {
     ctx.clearRect(0, 0, cw, ch);
 
